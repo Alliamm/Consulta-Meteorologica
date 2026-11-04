@@ -1,26 +1,66 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Busca por localidade</title>
     <link rel="stylesheet" href="estilo.css">
-    <script src="codigo.js"></script>
+    <script src="codigo.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Consulta Meteorológica</h1>
-        <form id="formulario">
-            <label for="latitude">Latitude (-90 a 90):</label>
-		    <input type="number" id="latitude" name="latitude" step="any" min="-90" max="90" required>
-		    <label for="longitude">Longitude (-180 a 180):</label>
-		    <input type="number" id="longitude" name="longitude" step="any" min="-180" max="180" required>
-		    <button type="submit" id="buscar">Buscar</button>
-        </form>
-        <p id="mensagem" role="status"></p>
-	<div id="clima">
-		<ul id="resultado"></ul>
-	</div>
-    </div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                ☁ Consulta<span>Metereológica</span>
+            </div>
+            <div class="status">
+                <span id="status">FAVORITOS</span>
+                <ul id="favoritos">
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>Explore o clima.</h1>
+        <p>
+            Encontre uma cidade e descubra informações
+            meteorológicas da sua região.
+        </p>
+    </section>
+    <main>
+        <section class="search-card">
+            <h2>📍 Buscar localização</h2>
+            <p>
+                Digite o nome de uma cidade, município ou região.
+            </p>
+            <form id="formulario">
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Ex: Porto Alegre, RS"
+                    aria-label="Nome da cidade ou região"
+                    required
+                >
+                <button type="submit" id="buscar">
+                    Buscar
+                </button>
+            </form>
+            <p id="mensagem" role="status" aria-live="polite"></p>
+        </section>
+        <section class="results">
+            <h2>Resultados da busca</h2>
+            <div class="empty-state" id="locals">
+                <ul id="resultado"></ul>
+                <p id="placeholder">
+                    Suas localidades encontradas aparecerão aqui.
+                </p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        INFORMAÇÃO E MONITORAMENTO CLIMÁTICO
+    </footer>
 </body>
 </html>

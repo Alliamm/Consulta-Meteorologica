@@ -1,104 +1,119 @@
-const latitude = document.getElementById('latitude');
-const longitude = document.getElementById('longitude');
+
+const formulario = document.getElementById('formulario');
+
+// Referências aos elementos da página
+const nome = document.getElementById('name');
 const botao = document.getElementById('buscar');
 const mensagem = document.getElementById('mensagem');
 const resultado = document.getElementById('resultado');
-const formulario = document.getElementById('formulario');
-const descricoesClima = {
-			0: 'Céu limpo',
-			1: 'Predominantemente limpo',
-			2: 'Parcialmente nublado',
-			3: 'Nublado',
-			45: 'Nevoeiro',
-			48: 'Nevoeiro com geada',
-			51: 'Garoa leve',
-			53: 'Garoa moderada',
-			55: 'Garoa intensa',
-			56: 'Garoa congelante leve',
-			57: 'Garoa congelante intensa',
-			61: 'Chuva fraca',
-			63: 'Chuva moderada',
-			65: 'Chuva forte',
-			66: 'Chuva congelante leve',
-			67: 'Chuva congelante forte',
-			71: 'Neve fraca',
-			73: 'Neve moderada',
-			75: 'Neve forte',
-			77: 'Grãos de neve',
-			80: 'Pancadas de chuva fracas',
-			81: 'Pancadas de chuva moderadas',
-			82: 'Pancadas de chuva violentas',
-			85: 'Pancadas de neve fracas',
-			86: 'Pancadas de neve fortes',
-			95: 'Tempestade',
-			96: 'Tempestade com granizo leve',
-			99: 'Tempestade com granizo forte'
-		};
-        formulario.addEventListener('submit', function(evento) {
-			// Impede o envio padrão do formulário (recarregar a página)
-			evento.preventDefault();
+const placeholder = document.getElementById('placeholder');
+const favoritosLista = document.getElementById('favoritos');
 
-			// Converte o texto dos inputs em números decimais
-			const lat = parseFloat(latitude.value);
-			const lon = parseFloat(longitude.value);
-			// Valida se são números e se estão dentro dos limites geográficos
-			if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-				alert('Informe uma latitude (-90 a 90) e uma longitude (-180 a 180) válidas.');
-				return;
-			}
+	let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+	function salvarFavoritos() {
+    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+}
+	function estaFavoritado(local) {
+    	return favoritos.some(fav => fav.id === local.id);
+}
+	function alternarFavorito(local) {
+    if (estaFavoritado(local)) {
+        favoritos = favoritos.filter(fav => fav.id !== local.id);
+    } else {
+        favoritos.push(local);
+    }
+    salvarFavoritos();
+    mostrarFavoritos();
+    mostrarResultados();
+}
+	function mostrarFavoritos() {
+		
+    	favoritosLista.textContent = '';
+    	favoritos.forEach(local => {
+        const item = document.createElement('li');
+        const partes = [
+            local.name,
+            local.admin2,
+            local.admin1,
+            local.country
+        ].filter(Boolean);
+        item.textContent = partes.join(', ');
+        const botaoRemover = document.createElement('button');
+        botaoRemover.textContent = '❌ Remover';
 
-			// Limpa resultados anteriores e evita cliques repetidos durante a busca
-			resultado.textContent = '';
-			mensagem.textContent = 'Buscando dados do clima...';
-			botao.disabled = true;
+        botaoRemover.addEventListener('click', () => {
+            alternarFavorito(local);
+        });
+        item.appendChild(botaoRemover);
+        favoritosLista.appendChild(item);
+    });
+}
+	let locaisEncontrados = [];
+	function mostrarResultados() {
+    resultado.textContent = '';
+    locaisEncontrados.forEach(local => {
 
-			// "current" lista as variáveis desejadas para as condições atuais;
-			// timezone "auto" devolve o horário no fuso da localização informada
-			const parametros = new URLSearchParams({
-				latitude: lat,
-				longitude: lon,
-				current: 'temperature_2m,relative_humidity_2m,weather_code',
-				timezone: 'auto'
-			});
+        const item = document.createElement('li');
 
-			// Envia a requisição GET para a API de previsão do tempo
-			fetch(`https://api.open-meteo.com/v1/forecast?${parametros}`)
-				.then(function(resposta) {
-					// O fetch não rejeita erros HTTP automaticamente
-					if (!resposta.ok) {
-						throw new Error(`Erro HTTP: ${resposta.status}`);
-					}
-					return resposta.json();
-				})
-				.then(function(dados) {
-					console.log(dados);
-					// "current" traz os valores; "current_units" traz as unidades (°C, %, ...)
-					const atual = dados.current;
-					const unidades = dados.current_units;
+        const partes = [
+            local.name,
+            local.admin2,
+            local.admin1,
+            local.country
+        ].filter(Boolean);
+        const texto = document.createElement('span');
+        texto.textContent = partes.join(', ');
+        const botaoFavoritar = document.createElement('button');
+        botaoFavoritar.textContent = estaFavoritado(local)
+            ? '⭐'
+            : '☆';
+        botaoFavoritar.addEventListener('click', () => {
+            alternarFavorito(local);
+        });
+        item.appendChild(texto);
+        item.appendChild(botaoFavoritar);
+        resultado.appendChild(item);
+    });
+}
+	mostrarFavoritos();
+formulario.addEventListener('submit', function(evento) {
+    evento.preventDefault();
+    const termo = nome.value.trim();
+    if (termo === '') {
+        alert('Por favor, digite um nome de localidade válido.');
+        return;
+    }
+    resultado.textContent = '';
+    placeholder.style.display = 'none';
+    mensagem.textContent = 'Buscando localidades...';
+    botao.disabled = true;
+    const parametros = new URLSearchParams({
+        name: termo,
+        count: 10,
+        language: 'pt',
+        format: 'json'
+    });
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?${parametros}`)
+        .then(function(resposta) {
+            if (!resposta.ok) {
+                throw new Error(`Erro HTTP: ${resposta.status}`);
+            }
+            return resposta.json();
+        })
+        .then(function(dados) {
+    		locaisEncontrados = dados.results || [];
+    		console.log(dados);
+    		mensagem.textContent = locaisEncontrados.length === 0
+        ? 'Nenhuma localidade encontrada.'
+        : `${locaisEncontrados.length} ocorrências encontradas.`;
+    	mostrarResultados();
+        })
+        .catch(function(erro) {
+            mensagem.textContent = 'Não foi possível buscar os dados.';
+            console.error(erro);
+        })
+        .finally(function() {
+            botao.disabled = false;
+        });
+});
 
-					mensagem.textContent = `Dados de ${atual.time} (${dados.timezone})`;
-
-					// Textos que serão exibidos, um por item da lista
-					const itens = [
-						`Temperatura: ${atual.temperature_2m} ${unidades.temperature_2m}`,
-						`Umidade relativa: ${atual.relative_humidity_2m} ${unidades.relative_humidity_2m}`,
-						`Código do clima (WMO): ${atual.weather_code}`,
-						`Clima: ${descricoesClima[atual.weather_code] || 'Descrição não disponível'}`
-					];
-
-					// Cria um <li> para cada texto e o adiciona à lista
-					itens.forEach(function(texto) {
-						const item = document.createElement('li');
-						item.textContent = texto;
-						resultado.appendChild(item);
-					});
-				})
-				.catch(function(erro) {
-					mensagem.textContent = 'Não foi possível buscar os dados.';
-					console.error(erro);
-				})
-				// Executa sempre, com sucesso ou erro: reabilita o botão
-				.finally(function() {
-					botao.disabled = false;
-				});
-		});
