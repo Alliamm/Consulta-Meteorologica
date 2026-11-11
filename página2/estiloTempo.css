@@ -1,0 +1,143 @@
+
+:root {
+    --primary: #0B1F33;
+    --secondary: #174A6E;
+    --blue: #25A9D2;
+    --cyan: #8AD9E8;
+    --background: #EAF4F7;
+    --white: #FFFFFF;
+    --text: #173448;
+    --muted: #71818D;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+header, footer {
+    background: var(--primary);
+    color: white;
+    padding: 25px 8%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+main {
+    max-width: 1050px;
+    margin: auto;
+    padding: 35px 20px 60px;
+}
+
+#voltar {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 25px;
+}
+
+.weather-hero {
+    background: var(--primary);
+    color: white;
+    padding: 35px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+}
+
+.temperatura-principal {
+    padding: 35px 0;
+    text-align: center;
+}
+
+#temperatura {
+    font-size: 65px;
+}
+
+#iconeClima {
+    font-size: 55px;
+}
+
+.condicoes,
+.previsao-horas,
+.previsao-dias {
+    margin-bottom: 35px;
+}
+
+h2 {
+    margin-bottom: 18px;
+}
+
+.cards-condicoes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(11,31,51,.06);
+}
+
+.card h3 {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#horas,
+#dias {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(11,31,51,.06);
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+    .cards-condicoes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .weather-hero {
+        padding: 25px;
+    }
+
+    #temperatura {
+        font-size: 50px;
+    }
+}

@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Consulta Meteorológica</title>
+
+    <link rel="stylesheet" href="estiloTempo.css">
+    <script src="codigoTempo.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                ☁ Consulta<span>Metereológica</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- Retorno -->
+        <button id="voltar">← Voltar à busca</button>
+
+        <!-- Informações principais -->
+        <section class="weather-hero">
+
+            <div class="localizacao">
+                <h1 id="cidade">Nome da cidade</h1>
+                <p id="regiao">Estado, País</p>
+            </div>
+
+            <div class="temperatura-principal">
+                <span id="iconeClima">☀️</span>
+                <h2 id="temperatura">--°</h2>
+                <p id="descricao">Condição climática</p>
+                <p id="sensacao">Sensação térmica: --°</p>
+            </div>
+
+            <div class="temperaturas">
+                <p>Máxima: <span id="maxima">--°</span></p>
+                <p>Mínima: <span id="minima">--°</span></p>
+            </div>
+
+        </section>
+
+        <!-- Condições atuais -->
+        <section class="condicoes">
+
+            <h2>Condições atuais</h2>
+
+            <div class="cards-condicoes">
+
+                <article class="card">
+                    <h3>Umidade</h3>
+                    <p id="umidade">--%</p>
+                </article>
+
+                <article class="card">
+                    <h3>Vento</h3>
+                    <p id="vento">-- km/h</p>
+                </article>
+
+                <article class="card">
+                    <h3>Índice UV</h3>
+                    <p id="uv">--</p>
+                </article>
+
+                <article class="card">
+                    <h3>Pressão</h3>
+                    <p id="pressao">-- hPa</p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- Previsão por hora -->
+        <section class="previsao-horas">
+            <h2>Previsão para as próximas horas</h2>
+
+            <div id="horas">
+                <!-- Previsões inseridas pelo JavaScript -->
+            </div>
+        </section>
+
+        <!-- Previsão dos próximos dias -->
+        <section class="previsao-dias">
+            <h2>Previsão para os próximos dias</h2>
+
+            <div id="dias">
+                <!-- Previsões inseridas pelo JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        INFORMAÇÃO E MONITORAMENTO CLIMÁTICO
+    </footer>
+
+</body>
+</html>

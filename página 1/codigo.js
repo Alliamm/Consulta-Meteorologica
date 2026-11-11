@@ -51,6 +51,7 @@ const favoritosLista = document.getElementById('favoritos');
 	let locaisEncontrados = [];
 	function mostrarResultados() {
     resultado.textContent = '';
+
     locaisEncontrados.forEach(local => {
 
         const item = document.createElement('li');
@@ -61,20 +62,37 @@ const favoritosLista = document.getElementById('favoritos');
             local.admin1,
             local.country
         ].filter(Boolean);
+
         const texto = document.createElement('span');
         texto.textContent = partes.join(', ');
+
         const botaoFavoritar = document.createElement('button');
+
         botaoFavoritar.textContent = estaFavoritado(local)
             ? '⭐'
             : '☆';
-        botaoFavoritar.addEventListener('click', () => {
+
+        botaoFavoritar.addEventListener('click', (evento) => {
+            evento.stopPropagation();
             alternarFavorito(local);
         });
+
         item.appendChild(texto);
         item.appendChild(botaoFavoritar);
+
         resultado.appendChild(item);
+
+        item.addEventListener('click', function(evento) {
+            evento.preventDefault();
+
+            sessionStorage.setItem('localSelecionado', JSON.stringify(local));
+
+            window.location.href = '../página2/resultadotempo.html';
+        });
+
     });
 }
+
 	mostrarFavoritos();
 formulario.addEventListener('submit', function(evento) {
     evento.preventDefault();
@@ -102,6 +120,9 @@ formulario.addEventListener('submit', function(evento) {
         })
         .then(function(dados) {
     		locaisEncontrados = dados.results || [];
+            sessionStorage.setItem('ultimaPesquisa', termo);
+            sessionStorage.setItem('locaisEncontrados', JSON.stringify(locaisEncontrados));
+
     		console.log(dados);
     		mensagem.textContent = locaisEncontrados.length === 0
         ? 'Nenhuma localidade encontrada.'
