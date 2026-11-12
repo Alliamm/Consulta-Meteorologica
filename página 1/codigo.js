@@ -1,7 +1,6 @@
 
 const formulario = document.getElementById('formulario');
 
-// Referências aos elementos da página
 const nome = document.getElementById('name');
 const botao = document.getElementById('buscar');
 const mensagem = document.getElementById('mensagem');
@@ -83,8 +82,9 @@ const favoritosLista = document.getElementById('favoritos');
         resultado.appendChild(item);
 
         item.addEventListener('click', function(evento) {
-            evento.preventDefault();
-
+            if (evento.target.closest('button')) {
+        return;
+    }
             sessionStorage.setItem('localSelecionado', JSON.stringify(local));
 
             window.location.href = '../página2/resultadotempo.html';

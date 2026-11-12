@@ -1,4 +1,8 @@
 
+/* =====================================
+   VARIÁVEIS DE CORES
+===================================== */
+
 :root {
     --primary: #0B1F33;
     --secondary: #174A6E;
@@ -9,6 +13,11 @@
     --text: #173448;
     --muted: #71818D;
 }
+
+
+/* =====================================
+   CONFIGURAÇÕES GERAIS
+===================================== */
 
 * {
     margin: 0;
@@ -23,7 +32,13 @@ body {
     min-height: 100vh;
 }
 
-header, footer {
+
+/* =====================================
+   CABEÇALHO E RODAPÉ
+===================================== */
+
+header,
+footer {
     background: var(--primary);
     color: white;
     padding: 25px 8%;
@@ -44,11 +59,26 @@ header, footer {
     color: var(--cyan);
 }
 
+footer {
+    text-align: center;
+    font-size: 12px;
+}
+
+
+/* =====================================
+   CONTEÚDO PRINCIPAL
+===================================== */
+
 main {
     max-width: 1050px;
     margin: auto;
     padding: 35px 20px 60px;
 }
+
+
+/* =====================================
+   BOTÃO VOLTAR
+===================================== */
 
 #voltar {
     background: var(--blue);
@@ -60,12 +90,37 @@ main {
     margin-bottom: 25px;
 }
 
+#voltar:hover {
+    background: var(--secondary);
+}
+
+
+/* =====================================
+   MENSAGEM
+===================================== */
+
+#mensagem {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+
+/* =====================================
+   DESTAQUE DO CLIMA
+===================================== */
+
 .weather-hero {
     background: var(--primary);
     color: white;
     padding: 35px;
     border-radius: 18px;
     margin-bottom: 30px;
+}
+
+.localizacao {
+    text-align: center;
 }
 
 .temperatura-principal {
@@ -80,6 +135,17 @@ main {
 #iconeClima {
     font-size: 55px;
 }
+
+.temperaturas {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+
+/* =====================================
+   CONDIÇÕES ATUAIS
+===================================== */
 
 .condicoes,
 .previsao-horas,
@@ -115,6 +181,11 @@ h2 {
     font-weight: 700;
 }
 
+
+/* =====================================
+   CONTAINERS DAS PREVISÕES
+===================================== */
+
 #horas,
 #dias {
     background: white;
@@ -123,12 +194,110 @@ h2 {
     box-shadow: 0 5px 20px rgba(11,31,51,.06);
 }
 
-footer {
+
+/* =====================================
+   PREVISÃO DAS PRÓXIMAS HORAS
+===================================== */
+
+#horas {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+}
+
+.card-hora {
+    min-width: 120px;
+    flex-shrink: 0;
+    background: var(--background);
+    padding: 18px 12px;
+    border-radius: 12px;
     text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-hora:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px rgba(11,31,51,.10);
+}
+
+.card-hora h3 {
+    color: var(--secondary);
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.card-hora span {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.card-hora p {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.card-hora small {
+    color: var(--muted);
     font-size: 12px;
 }
 
+
+/* =====================================
+   PREVISÃO DOS PRÓXIMOS DIAS
+===================================== */
+
+#dias {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card-dia {
+    background: var(--background);
+    padding: 20px 12px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-dia:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px rgba(11,31,51,.10);
+}
+
+.card-dia h3 {
+    color: var(--secondary);
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-transform: capitalize;
+}
+
+.card-dia span {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.card-dia p {
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.card-dia p:nth-last-child(-n+2) {
+    font-weight: 700;
+}
+
+
+/* =====================================
+   RESPONSIVIDADE
+===================================== */
+
 @media (max-width: 700px) {
+
     .cards-condicoes {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -140,4 +309,32 @@ footer {
     #temperatura {
         font-size: 50px;
     }
+
+    #dias {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #horas,
+    #dias {
+        padding: 15px;
+    }
+
+    .card-hora {
+        min-width: 105px;
+    }
+
+}
+
+@media (max-width: 400px) {
+
+    #dias {
+        grid-template-columns: 1fr;
+    }
+
+    .temperaturas {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
 }
